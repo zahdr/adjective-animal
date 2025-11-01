@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Random Name Generator</title>
+  <style>
+    body { 
+      font-family: sans-serif; 
+      text-align: center; 
+      margin-top: 10vh; 
+    }
+    h1 { 
+      font-size: 2rem; 
+      margin-bottom: 2rem; 
+    }
+    ul { 
+      list-style: none; 
+      padding: 0; 
+      font-size: 1.5rem;
+      line-height: 1.8;
+    }
+  </style>
+</head>
+<body>
+  <ul id="names"></ul>
+  <script>
+    async function generate() {
+      const [adjectivesData, animalsData] = await Promise.all([
+        fetch("./data/adjectives.json").then(res => res.json()),
+        fetch("./data/animals.json").then(res => res.json())
+      ]);
+
+      const adjectives = adjectivesData.adjs;
+      const animals = animalsData.animals;
+
+      const list = document.getElementById("names");
+      list.innerHTML = "";
+
+      for (let i = 0; i < 10; i++) {
+        const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
+        const ani = animals[Math.floor(Math.random() * animals.length)];
+        const li = document.createElement("li");
+        li.textContent = `${adj}-${ani}`;
+        list.appendChild(li);
+      }
+    }
+
+    generate();
+  </script>
+</body>
+</html>
